@@ -40,10 +40,10 @@
             android:layout_below="@+id/text_view_namaProduk"
          />
         <TextView
-            android:id="@+id/text_view_selisih"
+            android:id="@+id/text_view_barcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Selisih"
+            android:text="Kode Barcode"
             android:layout_below="@+id/text_view_kodeProduk"
             />
         

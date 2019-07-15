@@ -30,14 +30,14 @@
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right|end"
-        android:src="@drawable/ic_save_black_24dp"
-        android:background="@color/matGreen"
-        app:fabSize="normal"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|right|end"
         android:layout_marginRight="70dp"
-        android:visibility="gone"/>
+        android:background="@color/matGreen"
+        android:src="@drawable/ic_save_black_24dp"
+        android:visibility="gone"
+        app:fabSize="normal" />
     <android.support.v7.widget.RecyclerView
         android:clickable="true"
         android:id="@+id/recycle_view_produk"
@@ -52,6 +52,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Result"
+        android:visibility="gone"
+        android:textSize="22sp"
+
+        android:layout_marginTop="20dp"/>
+    <TextView
+        android:id="@+id/text_view_idRuangan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Ruangan"
         android:visibility="gone"
         android:textSize="22sp"
 

@@ -1,97 +1,39 @@
 package com;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Movie;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.inhuman.scanner.dashboad.Model.StokProduk;
-import com.inhuman.scanner.dashboad.R;
-import com.inhuman.scanner.dashboad.ScannerActivity;
+import com.inhuman.scanner.stokopname.Model.StokOpnameDetail;
+import com.inhuman.scanner.stokopname.Model.StokOpnamePost;
+import com.inhuman.scanner.stokopname.Model.StokProduk;
+import com.inhuman.scanner.stokopname.R;
+import com.inhuman.scanner.stokopname.ScannerActivity;
+import com.inhuman.scanner.stokopname.ServiceApi;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-//
-//public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.ViewHolder> {
-//
-//
-//    private Context context;
-//
-//    private List<StokProduk> list;
-//
-//
-//    public StokProdukAdapter(Context context, List<StokProduk> list) {
-//
-//        this.context = context;
-//
-//        this.list = list;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View v = LayoutInflater.
-//                from(context).inflate(R.layout.stokproduk_item, parent, false);
-//
-//        return new ViewHolder(v);
-//    }
-//
-//    @Override
-//
-//    public void onBindViewHolder(ViewHolder holder, int position) {
-//        StokProduk stoks =
-//                list.get(position);
-//        holder.textViewNamaProduk.setText(stoks.getNamaProduk());
-//        holder.textViewKode.setText(stoks.getKodeProduk());
-//        holder.textViewStok.setText(String.valueOf(stoks.getQtyProduk()));
-//        holder.textViewSelisih.setText(String.valueOf(stoks.getSelisih()));
-//
-//
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//
-//        return list.size();
-//    }
-//
-//
-//    public class ViewHolder extends RecyclerView.ViewHolder {
-//
-//        private TextView textViewNamaProduk;
-//        private TextView textViewStok;
-//        private TextView textViewKode;
-//        private TextView textViewSelisih;
-//
-//
-//        public ViewHolder(View itemView) {
-//
-//            super(itemView);
-//
-//
-//            textViewNamaProduk = itemView.findViewById(R.id.text_view_namaProduk);
-//            textViewStok = itemView.findViewById(R.id.text_view_kodeProduk);
-//            textViewKode = itemView.findViewById(R.id.text_view_qtyReal);
-//            textViewSelisih = itemView.findViewById(R.id.text_view_selisih);
-//
-//        }
-//    }
-//
-//}
+import java.util.Locale;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.StokProdukHolder> {
 
     private List<StokProduk> stoks = new ArrayList<>();
@@ -99,25 +41,104 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
     private Context context;
     private List<StokProduk> list;
 
-    Dialog myDialog;
+    AlertDialog myDialog;
+//    DialogEditStok dialogEditStoks;
+
+    TextInputLayout etKodeProduk;
+    TextInputLayout etNamaProduk;
+    TextInputLayout etJumlah;
+    TextInputLayout etStokSistem;
+    TextInputLayout etIdRuangan;
+    public Boolean postSukses;
+
     public StokProdukAdapter(List<StokProduk> data) {
         this.list = data;
     }
 
-
     @NonNull
     @Override
-    public StokProdukHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public StokProdukHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
         View itemView ;
         itemView  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.stokproduk_item,viewGroup,false);
         final StokProdukHolder vHolder = new StokProdukHolder(itemView);
 
-        myDialog = new Dialog(viewGroup.getContext());
-        myDialog.setContentView(R.layout.dialog_stok_edit);
+        //alert
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(viewGroup.getContext());
+        View viewDialog =  LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_edit_stok,viewGroup,false);
+        alertDialog.setView(viewDialog)
+            .setTitle("Edit Stok Produk")
+            .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    Objects.requireNonNull(etKodeProduk.getEditText()).setText("");
+//                    Objects.requireNonNull(etNamaProduk.getEditText()).setText("");
+//                    Objects.requireNonNull(etJumlah.getEditText()).setText(0);
+//                    myDialog.dismiss();
+                }
+            })
+            .setPositiveButton("Simpan", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                        float stokSistem = Float.valueOf(Objects.requireNonNull(etStokSistem.getEditText().getText()).toString());
+                        float stokReal = Float.valueOf(Objects.requireNonNull(etJumlah.getEditText().getText()).toString());
+                        float selisih = stokReal - stokSistem;
+
+                      List<StokOpnameDetail> so_detail = new ArrayList<>();
+                      so_detail.add(new StokOpnameDetail(  etKodeProduk.getEditText().getText().toString(),
+                            stokSistem,
+                            stokReal,
+                            selisih
+                            ));
+
+                        StokOpnamePost so_data = new StokOpnamePost(
+                                ScannerActivity.textViewIdRuangan.getText().toString(),
+                                "",
+                                now,
+                                so_detail
+
+                        );
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(ServiceApi.baseUrlApi )
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+
+                        Log.d("json",so_data.toString() );
+                        ServiceApi serviceApi = retrofit.create(ServiceApi.class);
+                        Call<StokOpnamePost> call = serviceApi.postStokOpname(so_data);
+
+                        call.enqueue(new Callback<StokOpnamePost>() {
+                            @Override
+                            public void onResponse(Call<StokOpnamePost> call, Response<StokOpnamePost> response) {
+                                if(!response.isSuccessful()){
+                                    Toast.makeText(viewGroup.getContext(), "Simpan Gagal", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                postSukses = true;
+                                ((ScannerActivity)viewGroup.getContext()).loadListRecycle(ScannerActivity.resultTextView.getText().toString());
+                                Toast.makeText(viewGroup.getContext(), "Simpan Sukses", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<StokOpnamePost> call, Throwable t) {
+                                Toast.makeText(viewGroup.getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                                postSukses = false;
+                            }
+                        });
+
+                    }
+            });
+        etKodeProduk =  viewDialog.findViewById(R.id.etKodeProduk);
+        etNamaProduk =  viewDialog.findViewById(R.id.etNamaProduk);
+        etJumlah =  viewDialog.findViewById(R.id.etJumlah);
+        etStokSistem = viewDialog.findViewById(R.id.etStokSistem);
+        myDialog = alertDialog.create();
+        //end alert
 
         return vHolder;
-//            return  new StokProdukHolder(itemView);
 
     }
 
@@ -128,22 +149,19 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
         stokProdukHolder.textViewNamaProduk.setText(stok.getNamaProduk());
         stokProdukHolder.textViewKode.setText(stok.getKodeProduk());
         stokProdukHolder.textViewStok.setText(String.valueOf(stok.getQtyProduk()));
-        stokProdukHolder.textViewSelisih.setText(String.valueOf(stok.getSelisih()));
+        stokProdukHolder.textViewBarcode.setText(stok.getKdBarcode());
         stokProdukHolder.popUp_stok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextInputLayout etKodeProduk = (TextInputLayout) myDialog.findViewById(R.id.etKodeProduk);
-                TextInputLayout etNamaProduk = (TextInputLayout) myDialog.findViewById(R.id.etNamaProduk);
-                TextInputLayout etJumlah = (TextInputLayout) myDialog.findViewById(R.id.etJumlah);
-                etKodeProduk.getEditText().setText(stok.getKodeProduk());
-                etNamaProduk.getEditText().setText(stok.getNamaProduk());
+                Objects.requireNonNull(etKodeProduk.getEditText()).setText(stok.getKodeProduk());
+                Objects.requireNonNull(etNamaProduk.getEditText()).setText(stok.getNamaProduk());
                 etJumlah.getEditText().setText(Integer.toString(stok.getQtyProduk()));
-
+                etStokSistem.getEditText().setText(Integer.toString(stok.getQtyProduk()));
+                etJumlah.requestFocus();
                 myDialog.show();
+
             }
         });
-
-
     }
 
     @Override
@@ -155,7 +173,7 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
         private TextView textViewNamaProduk;
         private TextView textViewStok;
         private TextView textViewKode;
-        private TextView textViewSelisih;
+        private TextView textViewBarcode;
 
         private CardView popUp_stok;
 //        private ImageButton popUpCloseBtn;
@@ -167,7 +185,7 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
             textViewNamaProduk = itemView.findViewById(R.id.text_view_namaProduk);
             textViewStok = itemView.findViewById(R.id.text_view_qtyReal);
             textViewKode = itemView.findViewById(R.id.text_view_kodeProduk);
-            textViewSelisih = itemView.findViewById(R.id.text_view_selisih);
+            textViewBarcode = itemView.findViewById(R.id.text_view_barcode);
 
         }
 

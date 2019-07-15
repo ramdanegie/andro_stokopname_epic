@@ -1,4 +1,4 @@
-package com.inhuman.scanner.dashboad.Model;
+package com.inhuman.scanner.stokopname.Model;
 
 public class StokProduk {
 
@@ -13,12 +13,13 @@ public class StokProduk {
     }
 
 
-    public StokProduk(String kodeProduk , String namaProduk, int qtyProduk, int selisih) {
+    public StokProduk(String kodeProduk , String namaProduk, int qtyProduk, int selisih, String kodeBarcode) {
 
         this.kodeProduk = kodeProduk;
         this.namaProduk = namaProduk;
         this.qtyProduk = qtyProduk;
         this.selisih = selisih;
+        this.kdBarcode = kdBarcode;
     }
 
 
@@ -68,5 +69,14 @@ public class StokProduk {
         this.selisih = selisih;
     }
 
+    public String getKdBarcode() {
+        return kdBarcode;
+    }
+
+
+    public void setKdBarcode(String kdBarcode) {
+
+        this.kdBarcode = kdBarcode;
+    }
 }
 

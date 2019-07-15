@@ -1,4 +1,4 @@
-package com.inhuman.scanner.dashboad;
+package com.inhuman.scanner.stokopname;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

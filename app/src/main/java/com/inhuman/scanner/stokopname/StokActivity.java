@@ -1,4 +1,4 @@
-package com.inhuman.scanner.dashboad;
+package com.inhuman.scanner.stokopname;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

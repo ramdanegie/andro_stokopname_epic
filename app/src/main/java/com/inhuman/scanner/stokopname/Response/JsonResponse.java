@@ -1,6 +1,6 @@
-package com.inhuman.scanner.dashboad.Response;
+package com.inhuman.scanner.stokopname.Response;
 
-import com.inhuman.scanner.dashboad.Model.StokProduk;
+import com.inhuman.scanner.stokopname.Model.StokProduk;
 
 public class JsonResponse {
     private StokProduk[] android;

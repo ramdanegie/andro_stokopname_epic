@@ -1,21 +1,18 @@
-package com.inhuman.scanner.dashboad;
+package com.inhuman.scanner.stokopname;
 
-import android.graphics.Movie;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.StokProdukAdapter;
 import com.google.zxing.Result;
-import com.inhuman.scanner.dashboad.Model.StokProduk;
-import com.inhuman.scanner.dashboad.Response.JsonResponse;
+import com.inhuman.scanner.stokopname.Model.StokProduk;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -24,12 +21,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-import android.widget.Toast;
-
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.POST;
 
 public class CameraActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private RecyclerView mList;
@@ -51,11 +44,18 @@ public class CameraActivity extends AppCompatActivity implements ZXingScannerVie
     }
 
 
-
     @Override
     public void handleResult(Result result) {
 //        ScannerActivity.resultTextView.setVisibility(View.VISIBLE);
         ScannerActivity.resultTextView.setText(result.getText());
+
+//        ScannerActivity.resultTextView = (TextView)findViewById(R.id.result_text);
+        Toast.makeText(getApplicationContext(), "Barcode : " +  result.getText(), Toast.LENGTH_LONG).show();
+        loadListRecycle(result.getText());
+        onBackPressed();
+    }
+
+    public void loadListRecycle(String barcode) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServiceApi.baseUrlApi )
                 .addConverterFactory(GsonConverterFactory.create())
@@ -63,7 +63,7 @@ public class CameraActivity extends AppCompatActivity implements ZXingScannerVie
 
         ServiceApi serviceApi = retrofit.create(ServiceApi.class);
 
-        Call<List<StokProduk>> call = serviceApi.getStokProdukSo("556",result.getText());
+        Call<List<StokProduk>> call = serviceApi.getStokProdukSo(ScannerActivity.textViewIdRuangan.getText().toString(),barcode);
         call.enqueue(new Callback<List<StokProduk>>() {
             @Override
             public void onResponse(Call<List<StokProduk>> call, Response<List<StokProduk>> response) {
@@ -89,7 +89,6 @@ public class CameraActivity extends AppCompatActivity implements ZXingScannerVie
                 Toast.makeText(getApplicationContext(), "Data Tidak ditemukan", Toast.LENGTH_LONG).show();
             }
         });
-        onBackPressed();
     }
 
     @Override

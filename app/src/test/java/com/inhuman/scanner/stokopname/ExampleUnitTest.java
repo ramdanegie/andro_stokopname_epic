@@ -1,4 +1,4 @@
-package com.inhuman.scanner.dashboad;
+package com.inhuman.scanner.stokopname;
 
 import org.junit.Test;
 
