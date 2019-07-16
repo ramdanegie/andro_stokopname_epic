@@ -1,92 +1,57 @@
 package com.inhuman.scanner.stokopname.Model;
 
-public class StokProduk {
-
+public class Produk {
     private String kodeProduk;
     private String namaProduk;
-    private int qtyProduk;
     private String satuanStandar;
     private String kdBarcode;
-    private int selisih;
+    private String detailJenisProduk;
 
-
-    public StokProduk(String kodeProduk , String namaProduk, int qtyProduk, int selisih, String kodeBarcode,String  satuanStandar) {
-
+    public Produk(String kodeProduk, String namaProduk, String satuanStandar, String kdBarcode, String detailJenisProduk) {
         this.kodeProduk = kodeProduk;
         this.namaProduk = namaProduk;
-        this.qtyProduk = qtyProduk;
-        this.selisih = selisih;
-        this.kdBarcode = kdBarcode;
         this.satuanStandar = satuanStandar;
+        this.kdBarcode = kdBarcode;
+        this.detailJenisProduk = detailJenisProduk;
     }
 
-
     public String getKodeProduk() {
-
         return kodeProduk;
     }
 
-
     public void setKodeProduk(String kodeProduk) {
-
         this.kodeProduk = kodeProduk;
     }
 
-
     public String getNamaProduk() {
-
         return namaProduk;
     }
 
-
     public void setNamaProduk(String namaProduk) {
-
         this.namaProduk = namaProduk;
     }
 
-
-    public int getQtyProduk() {
-
-        return qtyProduk;
+    public String getSatuanStandar() {
+        return satuanStandar;
     }
 
-
-    public void setQtyProduk(int qtyProduk) {
-
-        this.qtyProduk = qtyProduk;
-    }
-
-    public int getSelisih() {
-
-        return selisih;
-    }
-
-
-    public void setSelisih(int selisih) {
-
-        this.selisih = selisih;
+    public void setSatuanStandar(String satuanStandar) {
+        this.satuanStandar = satuanStandar;
     }
 
     public String getKdBarcode() {
         return kdBarcode;
     }
 
-
     public void setKdBarcode(String kdBarcode) {
-
         this.kdBarcode = kdBarcode;
     }
 
-    public String getSatuanStandar() {
-
-        return satuanStandar;
+    public String getDetailJenisProduk() {
+        return detailJenisProduk;
     }
 
-
-    public void setSatuanStandar(String satuanStandar) {
-
-        this.satuanStandar = satuanStandar;
+    public void setDetailJenisProduk(String detailJenisProduk) {
+        this.detailJenisProduk = detailJenisProduk;
     }
-
 }
-

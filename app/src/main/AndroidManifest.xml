@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name="com.inhuman.scanner.stokopname.MainActivity">
+        <activity android:name=".EditProdukActivity"
+            android:parentActivityName=".StokActivity" ></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,22 +23,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.inhuman.scanner.stokopname.ProfileActivity"
-            android:parentActivityName="com.inhuman.scanner.stokopname.MainActivity" />
+            android:name=".ProfileActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="com.inhuman.scanner.stokopname.HomeActivity"
-            android:parentActivityName="com.inhuman.scanner.stokopname.MainActivity" />
+            android:name=".HomeActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="com.inhuman.scanner.stokopname.ScannerActivity"
-            android:parentActivityName="com.inhuman.scanner.stokopname.MainActivity" />
+            android:name=".ScannerActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="com.inhuman.scanner.stokopname.SettingActivity"
-            android:parentActivityName="com.inhuman.scanner.stokopname.MainActivity" />
+            android:name=".SettingActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="com.inhuman.scanner.stokopname.StokActivity"
-            android:parentActivityName="com.inhuman.scanner.stokopname.MainActivity" />
-        <activity android:name="com.inhuman.scanner.stokopname.CameraActivity"
-            android:parentActivityName="com.inhuman.scanner.stokopname.ScannerActivity" ></activity>
+            android:name=".StokActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".CameraActivity"
+            android:parentActivityName=".ScannerActivity" />
     </application>
 
 </manifest>

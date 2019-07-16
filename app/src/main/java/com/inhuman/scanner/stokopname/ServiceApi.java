@@ -1,6 +1,7 @@
 package com.inhuman.scanner.stokopname;
 
 import com.google.gson.JsonObject;
+import com.inhuman.scanner.stokopname.Model.Produk;
 import com.inhuman.scanner.stokopname.Model.SpinnerRuangan;
 import com.inhuman.scanner.stokopname.Model.StokOpnamePost;
 import com.inhuman.scanner.stokopname.Model.StokProduk;
@@ -41,4 +42,19 @@ public interface ServiceApi {
     })
     @GET("transaksi/logistik-stok/get-combo-ruangan-andro")
     Call<List<SpinnerRuangan>> getComboRuangan();
+
+    @Headers({
+            "X-AUTH-TOKEN: " + token,
+            "Content-Type: application/json"
+    })
+    @GET("transaksi/andro/get-master-produk?")
+    Call<List<Produk>> getMasterProduk(@Query("namaproduk") String namaproduk);
+
+    @Headers({
+            "X-AUTH-TOKEN: " + token,
+            "Content-Type: application/json"
+    })
+    @POST("transaksi/andro/update-barcode-produk")
+    Call<Produk> updateBarcodeProduk(@Body Produk produk);
+
 }

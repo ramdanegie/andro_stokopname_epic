@@ -20,6 +20,7 @@ import com.inhuman.scanner.stokopname.Model.StokProduk;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,12 +98,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog alertDialog = builder.create();
         // show it
         alertDialog.show();
-//        DialogPilihRuangan dialogPilihRuangan = new DialogPilihRuangan();
-//        dialogPilihRuangan.show(getSupportFragmentManager(),"Pilih Ruangan");
+
     }
     public void getSelectedRuangan (View v){
         SpinnerRuangan ruangan = (SpinnerRuangan) spinner_ruangan.getSelectedItem();
-        Toast.makeText(this,"Ruangan " + ruangan.getNamaruangan().toString() +" dipilih" ,Toast.LENGTH_SHORT).show();
+        Toasty.info(this, "Ruangan " + ruangan.getNamaruangan().toString() +" dipilih",
+                Toast.LENGTH_SHORT, true).show();
+//        Toast.makeText(this,"Ruangan " + ruangan.getNamaruangan().toString() +" dipilih" ,Toast.LENGTH_SHORT).show();
         openScannerActivity(ruangan.getId());
     }
 
@@ -125,7 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call<List<SpinnerRuangan>> call, Response<List<SpinnerRuangan>> response) {
                 if(!response.isSuccessful()){
-                    Toast.makeText(getApplication(), response.code(), Toast.LENGTH_LONG).show();
+                    Toasty.warning(getApplicationContext(), "Data Tidak ditemukan",
+                            Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 
@@ -145,7 +148,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Call<List<SpinnerRuangan>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Data Tidak ditemukan", Toast.LENGTH_LONG).show();
+                Toasty.error(getApplicationContext(), "Koneksi Error",
+                        Toast.LENGTH_SHORT, true).show();
             }
         });
 

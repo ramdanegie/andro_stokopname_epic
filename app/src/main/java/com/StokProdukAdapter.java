@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,18 +30,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.StokProdukHolder> {
+public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.StokProdukHolder> implements Filterable {
 
-    private List<StokProduk> stoks = new ArrayList<>();
+//    private List<StokProduk> stoks = new ArrayList<>();
 
     private Context context;
     private List<StokProduk> list;
+    private List<StokProduk> listFull;
 
     AlertDialog myDialog;
 //    DialogEditStok dialogEditStoks;
@@ -53,6 +57,7 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
 
     public StokProdukAdapter(List<StokProduk> data) {
         this.list = data;
+        listFull = new ArrayList<>(data);
     }
 
     @NonNull
@@ -64,7 +69,7 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
 
         //alert
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(viewGroup.getContext());
-        View viewDialog =  LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_edit_stok,viewGroup,false);
+        final View viewDialog =  LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_edit_stok,viewGroup,false);
         alertDialog.setView(viewDialog)
             .setTitle("Edit Stok Produk")
             .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -108,24 +113,34 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
                         Log.d("json",so_data.toString() );
                         ServiceApi serviceApi = retrofit.create(ServiceApi.class);
                         Call<StokOpnamePost> call = serviceApi.postStokOpname(so_data);
-
+                        ScannerActivity.progressBar.setVisibility(View.VISIBLE);
+                        ScannerActivity.recyclerView.setVisibility(View.GONE);
                         call.enqueue(new Callback<StokOpnamePost>() {
                             @Override
                             public void onResponse(Call<StokOpnamePost> call, Response<StokOpnamePost> response) {
                                 if(!response.isSuccessful()){
-                                    Toast.makeText(viewGroup.getContext(), "Simpan Gagal", Toast.LENGTH_LONG).show();
+                                    Toasty.warning(viewGroup.getContext(), "Gagal Menyimpan Data",
+                                            Toast.LENGTH_SHORT, true).show();
+//                                    Toast.makeText(viewGroup.getContext(), "Simpan Gagal", Toast.LENGTH_LONG).show();
                                     return;
                                 }
                                 postSukses = true;
                                 ((ScannerActivity)viewGroup.getContext()).loadListRecycle(ScannerActivity.resultTextView.getText().toString());
-                                Toast.makeText(viewGroup.getContext(), "Simpan Sukses", Toast.LENGTH_LONG).show();
-
+//                                Toast.makeText(viewGroup.getContext(), "Simpan Sukses", Toast.LENGTH_LONG).show();
+                                Toasty.success(viewGroup.getContext(), "Sukses",
+                                        Toast.LENGTH_SHORT, true).show();
+                                ScannerActivity.progressBar.setVisibility(View.GONE);
+                                ScannerActivity.recyclerView.setVisibility(View.VISIBLE);
                             }
 
                             @Override
                             public void onFailure(Call<StokOpnamePost> call, Throwable t) {
-                                Toast.makeText(viewGroup.getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                                Toasty.error(viewGroup.getContext(), "Koneksi Error",
+                                        Toast.LENGTH_SHORT, true).show();
+//                                Toast.makeText(viewGroup.getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
                                 postSukses = false;
+                                ScannerActivity.progressBar.setVisibility(View.GONE);
+                                ScannerActivity.recyclerView.setVisibility(View.VISIBLE);
                             }
                         });
 
@@ -150,6 +165,7 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
         stokProdukHolder.textViewKode.setText(stok.getKodeProduk());
         stokProdukHolder.textViewStok.setText(String.valueOf(stok.getQtyProduk()));
         stokProdukHolder.textViewBarcode.setText(stok.getKdBarcode());
+        stokProdukHolder.textViewSatuan.setText(stok.getSatuanStandar());
         stokProdukHolder.popUp_stok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,7 +190,7 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
         private TextView textViewStok;
         private TextView textViewKode;
         private TextView textViewBarcode;
-
+        private TextView  textViewSatuan;
         private CardView popUp_stok;
 //        private ImageButton popUpCloseBtn;
 
@@ -186,8 +202,42 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
             textViewStok = itemView.findViewById(R.id.text_view_qtyReal);
             textViewKode = itemView.findViewById(R.id.text_view_kodeProduk);
             textViewBarcode = itemView.findViewById(R.id.text_view_barcode);
+            textViewSatuan = itemView.findViewById(R.id.text_view_satuan);
+
 
         }
 
     }
+
+    @Override
+    public Filter getFilter() {
+        return filterNamaProduk;
+    }
+    private  Filter filterNamaProduk = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+           List<StokProduk> filteredList = new ArrayList<>();
+           if(constraint ==  null || constraint.length() == 0){
+               filteredList.addAll(listFull);
+           }else{
+               String filterProduk = constraint.toString().toLowerCase().trim();
+
+               for(StokProduk item : listFull){
+                   if(item.getNamaProduk().toLowerCase().contains(filterProduk)){
+                       filteredList.add(item);
+                   }
+               }
+           }
+           FilterResults results = new FilterResults();
+           results.values = filteredList;
+           return  results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            list.clear();
+            list.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
