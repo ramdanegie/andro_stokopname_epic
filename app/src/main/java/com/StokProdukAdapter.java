@@ -22,12 +22,15 @@ import com.inhuman.scanner.stokopname.Model.StokProduk;
 import com.inhuman.scanner.stokopname.R;
 import com.inhuman.scanner.stokopname.ScannerActivity;
 import com.inhuman.scanner.stokopname.ServiceApi;
+import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
@@ -104,6 +107,11 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
                                 so_detail
 
                         );
+                        String token = Preferences.getTokenLogin(viewGroup.getContext());
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Content-Type", "application/json");
+                        headers.put("X-AUTH-TOKEN", token);
+
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(ServiceApi.baseUrlApi )
                                 .addConverterFactory(GsonConverterFactory.create())
@@ -112,7 +120,7 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
 
                         Log.d("json",so_data.toString() );
                         ServiceApi serviceApi = retrofit.create(ServiceApi.class);
-                        Call<StokOpnamePost> call = serviceApi.postStokOpname(so_data);
+                        Call<StokOpnamePost> call = serviceApi.postStokOpname(headers,so_data);
                         ScannerActivity.progressBar.setVisibility(View.VISIBLE);
                         ScannerActivity.recyclerView.setVisibility(View.GONE);
                         call.enqueue(new Callback<StokOpnamePost>() {

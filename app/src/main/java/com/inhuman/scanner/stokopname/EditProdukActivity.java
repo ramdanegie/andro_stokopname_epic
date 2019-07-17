@@ -9,11 +9,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.inhuman.scanner.stokopname.Model.Produk;
 import com.inhuman.scanner.stokopname.Model.StokOpnameDetail;
 import com.inhuman.scanner.stokopname.Model.StokOpnamePost;
+import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -29,11 +34,13 @@ public class EditProdukActivity extends AppCompatActivity {
     public static final String EXTRA_EDIT_PRODUK_SATUAN = "com.inhuman.scanner.stokopname.EXTRA_EDIT_PRODUK_SATUAN";
     public static final String EXTRA_EDIT_PRODUK_DETAIL  = "com.inhuman.scanner.stokopname.EXTRA_EDIT_PRODUK_DETAIL";
 
+
     TextInputLayout etKodeProduk;
     TextInputLayout etNamaProduk;
     TextInputLayout etSatuan;
     TextInputLayout etDetail;
-    TextInputLayout etBarcode;
+    public static TextInputLayout etBarcode;
+    ImageView imgScanBarcode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,13 @@ public class EditProdukActivity extends AppCompatActivity {
         etSatuan = findViewById(R.id.etSatuan);
         etDetail = findViewById(R.id.etDetailJenis);
         etBarcode = findViewById(R.id.etBarcode);
+        imgScanBarcode= findViewById(R.id.img_scan_edit) ;
+        imgScanBarcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),CameraProdukActivity.class));
+            }
+        });
 
         Intent intent = getIntent();
         etKodeProduk.getEditText().setText(intent.getStringExtra(EXTRA_EDIT_PRODUK_KDPRODUK));
@@ -53,6 +67,8 @@ public class EditProdukActivity extends AppCompatActivity {
         etDetail.getEditText().setText(intent.getStringExtra(EXTRA_EDIT_PRODUK_DETAIL));
         etSatuan.getEditText().setText(intent.getStringExtra(EXTRA_EDIT_PRODUK_SATUAN));
         etBarcode.requestFocus();
+
+
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -93,10 +109,14 @@ public class EditProdukActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        String token = Preferences.getTokenLogin(getApplicationContext());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("X-AUTH-TOKEN", token);
 
         Log.d("json",data_send.toString() );
         ServiceApi serviceApi = retrofit.create(ServiceApi.class);
-        Call<Produk> call = serviceApi.updateBarcodeProduk(data_send);
+        Call<Produk> call = serviceApi.updateBarcodeProduk(headers,data_send);
         call.enqueue(new Callback<Produk>() {
             @Override
             public void onResponse(Call<Produk> call, Response<Produk> response) {

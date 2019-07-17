@@ -20,13 +20,16 @@ import com.inhuman.scanner.stokopname.Model.StokProduk;
 import com.inhuman.scanner.stokopname.R;
 import com.inhuman.scanner.stokopname.ScannerActivity;
 import com.inhuman.scanner.stokopname.ServiceApi;
+import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,7 +76,12 @@ public class DialogPilihRuangan extends AppCompatDialogFragment {
 
         ServiceApi serviceApi = retrofit.create(ServiceApi.class);
 
-        Call<List<SpinnerRuangan>> call = serviceApi.getComboRuangan();
+        String token = Preferences.getTokenLogin(getContext());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("X-AUTH-TOKEN", token);
+
+        Call<List<SpinnerRuangan>> call = serviceApi.getComboRuangan(headers);
         call.enqueue(new Callback<List<SpinnerRuangan>>() {
             @Override
             public void onResponse(Call<List<SpinnerRuangan>> call, Response<List<SpinnerRuangan>> response) {

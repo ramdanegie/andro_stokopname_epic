@@ -1,60 +1,98 @@
 package com.inhuman.scanner.stokopname;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.gson.JsonObject;
+import com.inhuman.scanner.stokopname.Model.LoginUser;
+import com.inhuman.scanner.stokopname.Model.LogoutUser;
 import com.inhuman.scanner.stokopname.Model.Produk;
 import com.inhuman.scanner.stokopname.Model.SpinnerRuangan;
 import com.inhuman.scanner.stokopname.Model.StokOpnamePost;
 import com.inhuman.scanner.stokopname.Model.StokProduk;
+import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
 
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
+
+import android.preference.PreferenceManager;
+
 public interface ServiceApi {
-    String  token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi5hcG90aWsifQ.3SPSaKTrOnKdr5sVnynYGTe14dKz9QN-z35tSaX_5YwLVHt_ZWyN0tlVuSg1dgeRC5Sg3cVwdbnYYtRgoHO86A";
+
+
     public static String baseUrlApi = "http://103.228.236.74:8888/service/";
 
-    @Headers({
-            "X-AUTH-TOKEN: " + token,
-            "Content-Type: application/json"
-    })
+    //    @Headers({
+//            "X-AUTH-TOKEN: " + token,
+//            "Content-Type: application/json"
+//    })
     @GET("transaksi/logistik-stok/get-stok-ruangan-so-andro?")
-    Call<List<StokProduk>> getStokProdukSo(@Query("ruanganfk") String ruanganfk, @Query("produkfk") String produkfk);
+    Call<List<StokProduk>> getStokProdukSo(
+            @HeaderMap Map<String, String> headers,
+            @Query("ruanganfk") String ruanganfk, @Query("produkfk") String produkfk);
 
-    @Headers({
-            "X-AUTH-TOKEN: " + token,
-            "Content-Type: application/json"
-    })
+    //    @Headers({
+//            "X-AUTH-TOKEN: " + token,
+//            "Content-Type: application/json"
+//    })
     @POST("transaksi/logistik-stok/save-stock-opname")
-    Call<StokOpnamePost> postStokOpname(@Body StokOpnamePost stokOpnamePost);
+    Call<StokOpnamePost> postStokOpname(
+            @HeaderMap Map<String, String> headers, @Body StokOpnamePost stokOpnamePost);
 
-    @Headers({
-            "X-AUTH-TOKEN: " + token,
-            "Content-Type: application/json"
-    })
+    //    @Headers({
+//            "X-AUTH-TOKEN: " + token,
+//            "Content-Type: application/json"
+//    })
     @GET("transaksi/logistik-stok/get-combo-ruangan-andro")
-    Call<List<SpinnerRuangan>> getComboRuangan();
+    Call<List<SpinnerRuangan>> getComboRuangan(@HeaderMap Map<String, String> headers);
 
-    @Headers({
-            "X-AUTH-TOKEN: " + token,
-            "Content-Type: application/json"
-    })
+    //    @Headers({
+//            "X-AUTH-TOKEN: " + token,
+//            "Content-Type: application/json"
+//    })
     @GET("transaksi/andro/get-master-produk?")
-    Call<List<Produk>> getMasterProduk(@Query("namaproduk") String namaproduk);
+    Call<List<Produk>> getMasterProduk(@HeaderMap Map<String, String> headers, @Query("namaproduk") String namaproduk);
+
+    //    @Headers({
+//            "X-AUTH-TOKEN: " + token,
+//            "Content-Type: application/json"
+//    })
+    @POST("transaksi/andro/update-barcode-produk")
+    Call<Produk> updateBarcodeProduk(@HeaderMap Map<String, String> headers, @Body Produk produk);
+
 
     @Headers({
-            "X-AUTH-TOKEN: " + token,
             "Content-Type: application/json"
     })
-    @POST("transaksi/andro/update-barcode-produk")
-    Call<Produk> updateBarcodeProduk(@Body Produk produk);
+    @POST("auth/sign-in-andro")
+    Call<LoginUser> loginUser(@Body LoginUser loginUser);
+
+    @Headers({
+            "Content-Type: application/json"
+    })
+    @POST("auth/sign-out")
+    Call<LogoutUser> logoutUser(@Body LogoutUser logoutUser);
+
+    @Headers({
+            "Content-Type: application/json"
+    })
+    @POST("auth/sign-in")
+    Call<ResponseBody> loginUserNew(@Body RequestBody body);
 
 }

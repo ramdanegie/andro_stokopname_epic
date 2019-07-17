@@ -23,9 +23,12 @@ import android.widget.Toast;
 
 import com.StokProdukAdapter;
 import com.inhuman.scanner.stokopname.Model.StokProduk;
+import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -109,6 +112,11 @@ public class ScannerActivity extends AppCompatActivity {
     }
 
     public void loadListRecycle(String barcode) {
+        String token = Preferences.getTokenLogin(getApplicationContext());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("X-AUTH-TOKEN", token);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServiceApi.baseUrlApi )
                 .addConverterFactory(GsonConverterFactory.create())
@@ -116,7 +124,7 @@ public class ScannerActivity extends AppCompatActivity {
 
         ServiceApi serviceApi = retrofit.create(ServiceApi.class);
 
-        Call<List<StokProduk>> call = serviceApi.getStokProdukSo(textViewIdRuangan.getText().toString(),barcode);
+        Call<List<StokProduk>> call = serviceApi.getStokProdukSo(headers,textViewIdRuangan.getText().toString(),barcode);
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         call.enqueue(new Callback<List<StokProduk>>() {

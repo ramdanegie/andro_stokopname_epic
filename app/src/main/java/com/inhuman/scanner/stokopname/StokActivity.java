@@ -18,9 +18,12 @@ import android.widget.Toast;
 
 import com.inhuman.scanner.stokopname.Adapter.ProdukAdapter;
 import com.inhuman.scanner.stokopname.Model.Produk;
+import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -93,7 +96,13 @@ public class StokActivity extends AppCompatActivity {
         ServiceApi serviceApi = retrofit.create(ServiceApi.class);
         produkProgressBarProduk.setVisibility(View.VISIBLE);
         recyclerViewProduk.setVisibility(View.GONE);
-        Call<List<Produk>> call = serviceApi.getMasterProduk(produk);
+
+        String token = Preferences.getTokenLogin(getApplicationContext());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("X-AUTH-TOKEN", token);
+
+        Call<List<Produk>> call = serviceApi.getMasterProduk(headers,produk);
         call.enqueue(new Callback<List<Produk>>() {
             @Override
             public void onResponse(Call<List<Produk>> call, Response<List<Produk>> response) {
