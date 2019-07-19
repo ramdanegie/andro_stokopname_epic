@@ -14,12 +14,16 @@ public class StokOpnamePost {
     private  String namaRuangan;
     private  String tglClosing;
     private List<StokOpnameDetail> stokProduk;
+    private  NoSo noSO;
 
-    public StokOpnamePost(String ruanganId, String namaRuangan, String tglClosing, List<StokOpnameDetail> stokProduk) {
+
+    public StokOpnamePost(String ruanganId, String namaRuangan, String tglClosing, List<StokOpnameDetail> stokProduk,NoSo noSO) {
         this.ruanganId = ruanganId;
         this.namaRuangan = namaRuangan;
         this.tglClosing = tglClosing;
         this.stokProduk = stokProduk;
+        this.noSO = noSO;
+
     }
 
 //    private class DetailsStok{

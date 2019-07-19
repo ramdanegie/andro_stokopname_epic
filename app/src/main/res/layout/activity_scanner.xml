@@ -33,7 +33,7 @@
         android:src="@drawable/ic_camera_enhance_black_24dp"
         android:background="@color/matGreen"
         app:fabSize="normal"
-        app:maxImageSize="40dp"
+        app:maxImageSize="24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
@@ -48,7 +48,7 @@
         android:layout_marginRight="70dp"
         android:background="@color/matGreen"
         android:src="@drawable/ic_add_white"
-        app:maxImageSize="50dp"
+        app:maxImageSize="24dp"
         app:fabSize="normal" />
     <android.support.v7.widget.RecyclerView
         android:clickable="true"

@@ -16,10 +16,14 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.inhuman.scanner.stokopname.Model.LoginUser;
+import com.inhuman.scanner.stokopname.Model.NoSo;
 import com.inhuman.scanner.stokopname.Model.StokOpnameDetail;
 import com.inhuman.scanner.stokopname.Model.StokOpnamePost;
 import com.inhuman.scanner.stokopname.Model.StokProduk;
 import com.inhuman.scanner.stokopname.R;
+import com.inhuman.scanner.stokopname.Response.JsonResponse;
 import com.inhuman.scanner.stokopname.ScannerActivity;
 import com.inhuman.scanner.stokopname.ServiceApi;
 import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
@@ -34,6 +38,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -99,12 +104,14 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
                             stokReal,
                             selisih
                             ));
+                        NoSo noso = new NoSo("");
 
                         StokOpnamePost so_data = new StokOpnamePost(
                                 ScannerActivity.textViewIdRuangan.getText().toString(),
                                 "",
                                 now,
-                                so_detail
+                                so_detail,
+                                noso
 
                         );
                         String token = Preferences.getTokenLogin(viewGroup.getContext());
@@ -133,6 +140,39 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
                                     return;
                                 }
                                 postSukses = true;
+                                Gson gson = new Gson();
+                                String responseSO = gson.toJson(response.body());
+                                //save LOG
+                                Gson g = new Gson();
+                                JsonResponse p = g.fromJson(responseSO, JsonResponse.class);
+
+                                String token = Preferences.getTokenLogin(viewGroup.getContext());
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("Content-Type", "application/json");
+                                headers.put("X-AUTH-TOKEN", token);
+
+                                Retrofit retrofit = new Retrofit.Builder()
+                                        .baseUrl(ServiceApi.baseUrlApi )
+                                        .addConverterFactory(GsonConverterFactory.create())
+                                        .build();
+                                ServiceApi serviceApi = retrofit.create(ServiceApi.class);
+                                Call<ResponseBody> calls = serviceApi.saveLogSO(headers,"Stok Opname","norec Struk Closing",p.getNoSo().getNorec(),"Android");
+                                calls.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if(!response.isSuccessful()) {
+                                            return;
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                    }
+                                });
+
+                                //End Log
+
                                 ((ScannerActivity)viewGroup.getContext()).loadListRecycle(ScannerActivity.resultTextView.getText().toString());
 //                                Toast.makeText(viewGroup.getContext(), "Simpan Sukses", Toast.LENGTH_LONG).show();
                                 Toasty.success(viewGroup.getContext(), "Sukses",
@@ -164,6 +204,8 @@ public class StokProdukAdapter extends RecyclerView.Adapter<StokProdukAdapter.St
         return vHolder;
 
     }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull StokProdukHolder stokProdukHolder, int i) {

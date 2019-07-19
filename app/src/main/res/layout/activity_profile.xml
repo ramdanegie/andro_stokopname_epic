@@ -1,9 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ProfileActivity">
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etNamaPegawai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
 
-</android.support.constraint.ConstraintLayout>
+        >
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nama Pegawai"
+            android:enabled="false"
+            android:inputType="text"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etTempatLahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/etNamaPegawai"
+        >
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tempat Lahir"
+            android:enabled="false"
+            android:drawablePadding="10dp"
+            android:inputType="text"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etTglLahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        android:layout_below="@+id/etTempatLahir"
+        android:layout_alignParentStart="true">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tgl Lahir"
+            android:enabled="false"
+            android:drawablePadding="10dp"
+            android:inputType="text"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etNIK"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        android:layout_below="@+id/etTglLahir"
+        android:layout_alignParentStart="true"
+        >
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="NIK"
+            android:inputType="text"
+            android:drawablePadding="10dp"
+            android:enabled="false"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etJenisKelamin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        android:layout_below="@+id/etNIK"
+
+        >
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jenis Kelamin"
+            android:inputType="text"
+
+            android:focusable="true"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawablePadding="10dp"
+            android:enabled="false"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+</RelativeLayout>

@@ -36,7 +36,7 @@ import android.preference.PreferenceManager;
 public interface ServiceApi {
 
 
-    public static String baseUrlApi = "http://103.228.236.74:8888/service/";
+    public static String baseUrlApi = "http://103.228.236.74:8000/service/";
 
     //    @Headers({
 //            "X-AUTH-TOKEN: " + token,
@@ -94,5 +94,13 @@ public interface ServiceApi {
     })
     @POST("auth/sign-in")
     Call<ResponseBody> loginUserNew(@Body RequestBody body);
+
+    @GET("transaksi/logging/save-log-all?")
+    Call <ResponseBody> saveLogSO(
+            @HeaderMap Map<String, String> headers,
+            @Query("jenislog") String jenislog,
+            @Query("referensi") String referensi,
+            @Query("noreff") String noreff,
+            @Query("keterangan") String keterangan);
 
 }

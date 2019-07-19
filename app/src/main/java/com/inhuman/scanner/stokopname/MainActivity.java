@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     TextView nav_tvNamaPegawai;
     TextView nav_tvNamaUser;
+    TextView tvInitial;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +104,16 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
         nav_tvNamaPegawai = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvNamaPegawai);
         nav_tvNamaUser =(TextView) navigationView.getHeaderView(0).findViewById(R.id.tvNamaUser);
-
+        tvInitial = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvInitial);
         String jsonLogin = Preferences.getResultDataLogin(this);
         if(jsonLogin != ""){
             Gson g = new Gson();
             LoginUser p = g.fromJson(jsonLogin, LoginUser.class);
             nav_tvNamaPegawai.setText(p.getNamaPegawai());
             nav_tvNamaUser.setText(p.getNamaUser());
+            String str = p.getNamaPegawai();
+            String initial = str.substring(0, 1);
+            tvInitial.setText(initial);
         }
 
     }

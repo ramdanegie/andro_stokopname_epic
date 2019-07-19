@@ -6,13 +6,22 @@ public class LoginUser {
     String namaPegawai;
     String kdUser;
     String token;
-
-    public LoginUser(String namaUser, String kataSandi, String namaPegawai, String kdUser, String token) {
+    Pegawai pegawai ;
+    public LoginUser(String namaUser, String kataSandi, String namaPegawai, String kdUser, String token, Pegawai pegawai) {
         this.namaUser = namaUser;
         this.kataSandi = kataSandi;
         this.namaPegawai = namaPegawai;
         this.kdUser = kdUser;
         this.token = token;
+        this.pegawai = pegawai;
+    }
+
+    public Pegawai getPegawai() {
+        return pegawai;
+    }
+
+    public void setPegawai(Pegawai pegawai) {
+        this.pegawai = pegawai;
     }
 
     public String getNamaUser() {

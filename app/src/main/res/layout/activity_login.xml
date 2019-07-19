@@ -30,13 +30,14 @@
             android:id="@+id/img_login"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:src="@drawable/logo_title" />
+            android:src="@drawable/realepic_new" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Selamat Datang Di Aplikasi Stok Opname"
+            android:text="Selamat Datang Di Aplikasi Stock Opname"
+            android:visibility="gone"
             android:textAlignment="center" />
 
         <android.support.design.widget.TextInputLayout
@@ -54,7 +55,7 @@
                 android:drawableStart="@drawable/ic_account_circle_yellow"
 
                 android:drawableLeft="@drawable/ic_account_circle_yellow"
-                android:drawablePadding="5dp"
+                android:drawablePadding="10dp"
                 android:hint="Nama Pengguna"
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
@@ -74,7 +75,7 @@
                 android:drawableStart="@drawable/ic_fingerprint_yellow"
 
                 android:drawableLeft="@drawable/ic_fingerprint_yellow"
-                android:drawablePadding="5dp"
+                android:drawablePadding="10dp"
                 android:hint="Kata Sandi"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>

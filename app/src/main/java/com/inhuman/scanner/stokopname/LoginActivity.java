@@ -1,7 +1,6 @@
 package com.inhuman.scanner.stokopname;
 
 import android.content.Intent;
-import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.inhuman.scanner.stokopname.Model.LoginUser;
-import com.inhuman.scanner.stokopname.Model.Produk;
+import com.inhuman.scanner.stokopname.Model.Pegawai;
 import com.inhuman.scanner.stokopname.SharedPreferences.Preferences;
 
 import es.dmoral.toasty.Toasty;
@@ -52,12 +51,14 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         progressBarLogin.setVisibility(View.VISIBLE);
+        Pegawai pegawai = new Pegawai("","","","","","");
         LoginUser data_send = new LoginUser(
                 tvl_namaUser.getEditText().getText().toString(),
                 tvl_Password.getEditText().getText().toString(),
                 "",
                 "",
-                ""
+                "",
+                pegawai
 
         );
         Retrofit retrofit = new Retrofit.Builder()

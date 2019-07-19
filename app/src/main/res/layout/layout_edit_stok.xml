@@ -16,6 +16,9 @@
             android:hint="Kode Produk"
             android:enabled="false"
             android:inputType="text"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawablePadding="10dp"
             />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -29,6 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nama Produk"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawablePadding="10dp"
             android:enabled="false"
             android:inputType="text"
             />
@@ -46,6 +52,7 @@
             android:layout_height="wrap_content"
             android:hint="Stok System"
             android:inputType="number"
+
             />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -59,6 +66,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Jumlah"
+            android:drawableStart="@drawable/ic_turned_in_orange_24dp"
+            android:drawableLeft="@drawable/ic_turned_in_orange_24dp"
+            android:drawablePadding="10dp"
             android:inputType="number"
             />
     </android.support.design.widget.TextInputLayout>

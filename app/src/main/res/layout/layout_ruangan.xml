@@ -16,8 +16,24 @@
             <!--android:inputType="text"-->
             <!--/>-->
     <!--</android.support.design.widget.TextInputLayout>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="#ededed">
+    <ImageView
+        android:id="@+id/img_kodeProduk"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_turned_in_orange_24dp"
+        android:layout_below="@+id/text_view_namaProduk"
+        android:layout_marginTop="5dp"
+        />
     <Spinner
+        android:layout_marginLeft="10dp"
         android:id="@+id/spinner_ruangan"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></Spinner>
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img_kodeProduk"></Spinner>
+    </RelativeLayout>
 </RelativeLayout>

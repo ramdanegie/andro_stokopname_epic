@@ -72,7 +72,7 @@
             android:layout_toRightOf="@+id/iv_mpKodeProduk"
             android:text="Kode Produk"
             android:textSize="10sp"
-
+            android:layout_marginLeft="5dp"
             />
 
 
@@ -100,7 +100,7 @@
             android:layout_toRightOf="@+id/img_satuan"
             android:text="Satuan "
             android:textSize="10sp"
-
+            android:layout_marginLeft="5dp"
             />
 
         <ImageView
@@ -118,6 +118,7 @@
             android:layout_toRightOf="@+id/img_satuan"
             android:text="Detail Jenis Produk "
             android:textSize="10sp"
+            android:layout_marginLeft="5dp"
 
             />
     </RelativeLayout>
