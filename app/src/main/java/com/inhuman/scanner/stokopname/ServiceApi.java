@@ -36,43 +36,26 @@ import android.preference.PreferenceManager;
 public interface ServiceApi {
 
 
-    public static String baseUrlApi = "http://103.228.236.74:8000/service/";
+    public static String baseUrlApi = "http://103.228.236.74:8888/service/";
 
-    //    @Headers({
-//            "X-AUTH-TOKEN: " + token,
-//            "Content-Type: application/json"
-//    })
     @GET("transaksi/logistik-stok/get-stok-ruangan-so-andro?")
     Call<List<StokProduk>> getStokProdukSo(
             @HeaderMap Map<String, String> headers,
             @Query("ruanganfk") String ruanganfk, @Query("produkfk") String produkfk);
 
-    //    @Headers({
-//            "X-AUTH-TOKEN: " + token,
-//            "Content-Type: application/json"
-//    })
+
     @POST("transaksi/logistik-stok/save-stock-opname")
     Call<StokOpnamePost> postStokOpname(
             @HeaderMap Map<String, String> headers, @Body StokOpnamePost stokOpnamePost);
 
-    //    @Headers({
-//            "X-AUTH-TOKEN: " + token,
-//            "Content-Type: application/json"
-//    })
+
     @GET("transaksi/logistik-stok/get-combo-ruangan-andro")
     Call<List<SpinnerRuangan>> getComboRuangan(@HeaderMap Map<String, String> headers);
 
-    //    @Headers({
-//            "X-AUTH-TOKEN: " + token,
-//            "Content-Type: application/json"
-//    })
+
     @GET("transaksi/andro/get-master-produk?")
     Call<List<Produk>> getMasterProduk(@HeaderMap Map<String, String> headers, @Query("namaproduk") String namaproduk);
 
-    //    @Headers({
-//            "X-AUTH-TOKEN: " + token,
-//            "Content-Type: application/json"
-//    })
     @POST("transaksi/andro/update-barcode-produk")
     Call<Produk> updateBarcodeProduk(@HeaderMap Map<String, String> headers, @Body Produk produk);
 
