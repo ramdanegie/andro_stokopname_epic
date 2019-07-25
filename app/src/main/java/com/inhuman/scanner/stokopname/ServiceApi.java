@@ -36,7 +36,7 @@ import android.preference.PreferenceManager;
 public interface ServiceApi {
 
 
-    public static String baseUrlApi = "http://103.228.236.74:8888/service/";
+    public static String baseUrlApi = "http://103.228.236.74:8000/service/";
 
     @GET("transaksi/logistik-stok/get-stok-ruangan-so-andro?")
     Call<List<StokProduk>> getStokProdukSo(
